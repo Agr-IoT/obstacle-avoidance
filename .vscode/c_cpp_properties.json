@@ -1,0 +1,48 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/halaldeen/catkin_ws/devel/include/**",
+                "/opt/ros/melodic/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation/amcl/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation/base_local_planner/include/**",
+                "/home/halaldeen/catkin_ws/src/beginner_tutorials/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation/carrot_planner/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation/clear_costmap_recovery/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation/costmap_2d/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation/dwa_local_planner/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation/global_planner/include/**",
+                "/home/halaldeen/catkin_ws/src/mavros/libmavconn/include/**",
+                "/home/halaldeen/catkin_ws/src/semester_project/local_map/include/**",
+                "/home/halaldeen/catkin_ws/src/semester_project/local_planner/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation/map_server/include/**",
+                "/home/halaldeen/catkin_ws/src/mavros/mavros/include/**",
+                "/home/halaldeen/catkin_ws/src/mavros/mavros_msgs/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation/move_base/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation/move_slow_and_clear/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation_2d/nav2d_exploration/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation_2d/nav2d_karto/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation_2d/nav2d_localizer/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation_2d/nav2d_navigator/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation_2d/nav2d_operator/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation/nav_core/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation/navfn/include/**",
+                "/home/halaldeen/catkin_ws/src/semester_project/px4_avoidance/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation/rotate_recovery/include/**",
+                "/home/halaldeen/catkin_ws/src/mavros/test_mavros/include/**",
+                "/home/halaldeen/catkin_ws/src/navigation/voxel_grid/include/**",
+                "/usr/include/**"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/opt/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc",
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++14"
+        }
+    ],
+    "version": 4
+}

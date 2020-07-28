@@ -1,0 +1,7 @@
+<launch>
+
+<node pkg="local_planner" type="a_star_planner_node" name="a_star_planner" >
+  <rosparam file="$(find local_planner)/launch/A_star_costmap.yaml" ns="local_map" />
+ </node>
+
+</launch>

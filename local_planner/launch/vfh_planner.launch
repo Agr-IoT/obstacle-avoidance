@@ -1,0 +1,7 @@
+<launch>
+
+<node pkg="local_planner" type="vfh_planner_node" name="vfh_plus_planner" >
+  <rosparam file="$(find local_planner)/launch/vfh_costmap.yaml" ns="local_map" />
+ </node>
+
+</launch>

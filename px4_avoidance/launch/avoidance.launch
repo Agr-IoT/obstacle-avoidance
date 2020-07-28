@@ -1,0 +1,23 @@
+<launch>
+
+<arg name="scan_topic" default="laser/scan" />
+
+<include file="$(find mavros)/launch/px4.launch" >
+	<arg name="fcu_url" value="udp://:14540@192.168.1.36:14557"/>
+</include>
+<node pkg="tf" type="static_transform_publisher" name="laser_broadcaster" args="0 0 0.1 0 0 0 base_link rplidar_link 1000" />
+
+<node pkg="px4_avoidance" type="frame_tf_broadcaster" name="base_link_broadcaster" />
+
+
+
+
+<node pkg="px4_avoidance" type="px4_avoidance_node" name="vfh_planner" >
+  
+ </node>
+
+
+
+<node pkg="rviz" type="rviz" name="visualizer"/>
+
+</launch>
