@@ -23,13 +23,10 @@ public:
 	
 	void AStarPlanner();
 private:
-	void get_vector_magnitude();
-	void get_certainity_grid();
-	void build_polar_histogram();
+	void getVectorMagnitude();
+	void getCertainityGrid();
+	void buildPolarHistogram();
 	
-
-
-
 	double _a = 1.4901;
 	double _b = 0.0002;
 	double alpha = 5 * (PI / 180.0);
@@ -48,11 +45,9 @@ private:
 	int w_s = 100;
 	std::string mOdometryFrame;
 	std::string mRobotFrame;
-	int  _certainity_grid  [100][100] = {0};
-	int  		  _m_grid  [100][100] = {0};
-	int           _b_direc [100][100] = {0};
-	
-	
+	int  _certainityGrid  [100][100] = {0};
+	int  _mGrid  					[100][100] = {0};
+	int  _bDirec 					[100][100] = {0};
 	
 };
 

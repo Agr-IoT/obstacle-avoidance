@@ -31,28 +31,26 @@ AStar ::~AStar ()
 } 
 
 
-void AStar::get_certainity_grid()
+void AStar::getCertainityGrid()
 {
 	int p = 0;
 	ROS_WARN("mapping ceartinity grid");
 	for(int i = 0 ;i < WIDTH ; ++i){
 		for(int j = 0 ; j < HEIGHT ; ++j){
 			int l = static_cast<int>(mCostmap->getCost(i , j));
-
 			double d_i_j = sqrt((49 - i)*(49 - i) + (49 - j)*(49 - j));
 			if (int(d_i_j) < 6){
 				++p;
 				continue;
 			}
 			if (l > 0)
-				_certainity_grid[i][j] += 1;
+				_certainityGrid[i][j] += 1;
 				continue;
 			if (l = 0){
-				if (_certainity_grid[i][j] == 0)
+				if (_certainityGrid[i][j] == 0)
 					continue;
-				else if (_certainity_grid[i][j] > 0)
-				{
-					_certainity_grid[i][j] -= 1;
+				else if (_certainityGrid[i][j] > 0){
+					_certainityGrid[i][j] -= 1;
 				}
 				
 			}
@@ -64,31 +62,17 @@ void AStar::get_certainity_grid()
 	ROS_WARN("%d " , p);
 }
 
-void AStar::get_vector_magnitude()
+void AStar::getVectorMagnitude()
 {
-
-
 	for(int i = 0 ;i < WIDTH ; ++i){
 		for(int j = 0 ; j < HEIGHT ; ++j){
-
 			if (int(sqrt((49 - i)*(49 - i) + (49 - j)*(49 - j))) < 6){
-				
 				continue;
 			}
 			double d_i_j =  sqrt((49 - i)*(49 - i) + (49 - j)*(49 - j));
-			_m_grid[i][j] = (_certainity_grid[i][j] * _certainity_grid[i][j])*(_a - _b * (d_i_j));
-
-
+			_mGrid[i][j] = (_certainityGrid[i][j] * _certainityGrid[i][j])*(_a - _b * (d_i_j));
 		}
 	}
-
-}
-
-void AStar::build_polar_histogram()
-{
-
-
-
 }
 
 
@@ -118,12 +102,5 @@ void AStar ::AStarPlanner()
 
 
 
-double diff(double v1, double v2)
-{
-	if(v1 > v2)
-		return v1 - v2;
-	else
-		return v2 - v1;
-}
 
 

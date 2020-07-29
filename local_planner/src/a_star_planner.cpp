@@ -16,23 +16,23 @@ using namespace ros;
 
 int main(int argc, char **argv)
 {
-    init(argc, argv, NODE_NAME);
-    NodeHandle n("~/");
+	init(argc, argv, NODE_NAME);
+	NodeHandle n("~/");
 
-    double frequency = 30.0;
-    //n.param("frequency", frequency, 100.0);
-    ROS_INFO("Operator will run at %.2f Hz.", frequency);
+	double frequency = 30.0;
+	//n.param("frequency", frequency, 100.0);
+	ROS_INFO("Operator will run at %.2f Hz.", frequency);
 
-    AStar planner;
-    
-    Rate loopRate(frequency);
-    while(ok())
-    {
-        spinOnce();
-        planner.AStarPlanner();
-        loopRate.sleep();
-        if(loopRate.cycleTime() > ros::Duration(1.0 / frequency))
-           ROS_WARN("Missed desired rate of %.2f Hz! Loop actually took %.4f seconds!",frequency, loopRate.cycleTime().toSec());
-    }
-    return 0;   
+	AStar planner;
+	
+	Rate loopRate(frequency);
+	while(ok())
+	{
+			spinOnce();
+			planner.AStarPlanner();
+			loopRate.sleep();
+			if(loopRate.cycleTime() > ros::Duration(1.0 / frequency))
+					ROS_WARN("Missed desired rate of %.2f Hz! Loop actually took %.4f seconds!",frequency, loopRate.cycleTime().toSec());
+	}
+	return 0;   
 }
