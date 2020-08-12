@@ -13,18 +13,6 @@
 
 #define NODE_NAME "vfh_plus_planner"
 
-
-nav_msgs::OccupancyGrid map_msg;
-
-
-void grid_callb(const nav_msgs::OccupancyGrid::ConstPtr &occupancy_msg)
-{
-    ROS_WARN("OK IN VFH GRID CALL");
-    map_msg = *occupancy_msg;
-    ROS_WARN("EXITING VFH GRID CALL");
-}
-
-
 using namespace ros;
 
 int main(int argc, char **argv)
@@ -32,7 +20,7 @@ int main(int argc, char **argv)
   init(argc, argv, NODE_NAME);
   NodeHandle n("~/");
 
-  double frequency = 30.0;
+  double frequency = 40.0;
   //n.param("frequency", frequency, 100.0);
   ROS_INFO("Operator will run at %.2f Hz.", frequency);
 
@@ -45,7 +33,7 @@ int main(int argc, char **argv)
     planner.vfhPlusPlanner();
     loopRate.sleep();
     if(loopRate.cycleTime() > ros::Duration(1.0 / frequency))
-      ROS_WARN("Missed desired rate of %.2f Hz! Loop actually took %.4f seconds!",frequency, loopRate.cycleTime().toSec());
+      ROS_WARN("Missed desired rate of %.2f Hz! Loop actually took %.4f Hz",frequency, 1/loopRate.cycleTime().toSec());
     }
 
   return 0;   
