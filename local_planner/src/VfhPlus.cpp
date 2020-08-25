@@ -2,7 +2,7 @@
 #include <math.h>
 #include <typeinfo>
 #include <algorithm>
-#include <local_planner/VfhPlus.h>
+#include "VfhPlus.h"
 
 #define DEG(X)\
     X*(180/PI)
@@ -33,7 +33,7 @@ VfhPlus ::VfhPlus () : mTf2Buffer(), mTf2Listener(mTf2Buffer)
   localPoseSub         = VfhNode.subscribe<geometry_msgs::PoseStamped>
                           ("mavros/local_position/pose" , 10 , &VfhPlus::poseCallb , this );
 
-  adaptedPathPub  = VfhNode.advertise<mavros_msgs::Trajectory>("vfh_planner/trajectory/generated" , 10 );
+  adaptedPathPub  = VfhNode.advertise<mavros_msgs::Trajectory>("vfh_planner/trajectory/generated" , 20 );
 
 
   mapi = VfhNode.advertise<nav_msgs::OccupancyGrid>("mapi" , 10);
@@ -93,7 +93,6 @@ void VfhPlus::buildCertainityGrid()
     {
       
       int index = HEIGHT * i + j;
-      float y;
       int costProbability  = static_cast<int>(mCostmap->getCost(i , j));
       if(costProbability == 255)
       {
@@ -107,6 +106,9 @@ void VfhPlus::buildCertainityGrid()
       histogramGrid[index].j = j;
       histogramGrid[index].d_i_j = d_i_j;
       histogramGrid[index].vectorDir = retCellDirection(dcp_x , dcp_y  , i , j);
+      double der = atan2( j - dcp_y  , i - dcp_x);
+
+      ROS_INFO("i->%d j->%d der->%lf  vdir->%lf" ,i , j ,  DEG(der) , DEG(histogramGrid[index].vectorDir));
       
 
       if(d_i_j < 6)
@@ -150,6 +152,7 @@ void VfhPlus::getVectorMagnitude()
   int yu = 0;
   int num_cells = WIDTH * HEIGHT;
   for(int cellIndex = 0 ; cellIndex < num_cells ; ++cellIndex)
+  
   {
     Cell &c = histogramGrid[cellIndex];
     int &certainty_value = histogramGrid[cellIndex].cv;
@@ -384,23 +387,23 @@ void VfhPlus::executeCommand()
     
     
   }
+
+  float step_distance = 1.5; //step distance in meters in the direction with least cost
   
   std::vector<double>::iterator result = std::min_element(acost.begin(), acost.end());
   int i = std::distance(acost.begin(), result);
   pubAng = (valleys[i].min_angle + valleys[i].max_angle)/2;  
-  this->adaptedPath.point_1.yaw = RAD(pubAng);
+  this->adaptedPath.point_1.yaw = this->desiredPath.point_1.yaw;
   adaptedPath.point_2.yaw = RAD(pubAng);
-  adaptedPath.point_1.position.x = 1.5 * std::cos(RAD(pubAng)) + localPosition.pose.position.x;
-  adaptedPath.point_1.position.y = 1.5 * std::sin(RAD(pubAng)) + localPosition.pose.position.y;
-
+  adaptedPath.point_1.position.x = step_distance* std::cos(RAD(pubAng)) + localPosition.pose.position.x;
+  adaptedPath.point_1.position.y = step_distance * std::sin(RAD(pubAng)) + localPosition.pose.position.y;
+  adaptedPath.point_1.position.z = 5;
   adaptedPath.point_1.velocity.x = NAN;
   adaptedPath.point_1.velocity.y = NAN;
   adaptedPath.point_1.velocity.z = NAN;
   adaptedPath.point_1.acceleration_or_force.x = NAN;
   adaptedPath.point_1.acceleration_or_force.y = NAN;
   adaptedPath.point_1.acceleration_or_force.z = NAN;
-  //adaptedPathPub.publish(desiredPath);
-  ROS_WARN("yawAng->%lf " , pubAng);
   
 }
 
@@ -410,7 +413,6 @@ void VfhPlus::selectValleys()
   Valley valley{0.0 ,0.0 , 0};
   int j = 0; 
   int g = 0;
-  //std::vector<Valley> valleys;
   for(int i = 0; i < k ;++i)
   {
 
@@ -419,7 +421,7 @@ void VfhPlus::selectValleys()
     {
       valley.max_angle = primaryPolarHistogram[i].maxAngle;
       valley.secCount += 1; 
-      if(valley.secCount == 12)
+      if(valley.secCount == 8)
       {
         g = i + 1;
         Valley v = valley;
@@ -427,7 +429,7 @@ void VfhPlus::selectValleys()
         valley.secCount = 0;
         continue;
       }
-      if(valley.secCount < 12)
+      if(valley.secCount < 5)
       {
         if(primaryPolarHistogram[i + 1].occupied == 1)
         {
